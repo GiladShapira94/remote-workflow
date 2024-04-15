@@ -1,0 +1,35 @@
+kind: project
+metadata:
+  name: test-remote-workflow-new
+spec:
+  functions:
+  - url: fetch-data.py
+    name: fetch-data
+    kind: job
+    image: mlrun/mlrun
+    handler: fetch_data
+  - url: trainer.py
+    name: trainer
+    kind: job
+    image: mlrun/mlrun
+    handler: train
+  - url: predict.py
+    name: predict
+    kind: job
+    image: mlrun/mlrun
+    handler: predict
+  workflows:
+  - engine: kfp
+    path: workflow.py
+    name: main
+  artifacts: []
+  conda: ''
+  source: git://github.com/GiladShapira94/remote-workflow.git#master
+  load_source_on_run: false
+  desired_state: online
+  workdir: ./src
+  default_image: .remote-workflow-image
+  build:
+    commands: []
+    requirements: []
+  custom_packagers: []
